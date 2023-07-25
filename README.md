@@ -1,0 +1,1 @@
+# lutece-ai-plugin-knowledge
