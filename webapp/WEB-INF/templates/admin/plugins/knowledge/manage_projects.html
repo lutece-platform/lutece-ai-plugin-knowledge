@@ -1,0 +1,32 @@
+<link href="css/admin/plugins/knowledge/knowledge.css" rel="stylesheet" type="text/css" />
+<@pageContainer>
+<@pageColumn class="container">
+<@pageHeader title='#i18n{knowledge.manage_project.title}' >
+<@tform class='form-inline pull-right' name='manage_project' action='jsp/admin/plugins/knowledge/ManageProjects.jsp'>
+    <@button type='submit' name='view_createProject' buttonIcon='plus' title='#i18n{knowledge.manage_projects.buttonAdd}' />
+</@tform>
+</@pageHeader>
+<@messages infos=infos />
+<div class="p-0">
+<div class="row row-cols-1 row-cols-xl-3 row-cols-lg-2 g-4">
+    <#list project_list as project >
+        <div class="col">
+            <div class="card h-100 border rounded-5">
+                <div class="card-body">
+                    <h2 class="text-center">${project.title}</h2>
+                    <p class="card-text">${project.description}</p>
+                </div>
+                <div class=" pt-3 border-top text-center">
+                    <@aButton href='jsp/admin/plugins/knowledge/ManageProjects.jsp?view=viewProject&id=${project.id}&clear=true' title='#i18n{portal.util.labelView} Conversation' color="knowledge" class=" btn btn-knowledge"  buttonIcon='player-play' />
+                    <@aButton href='jsp/admin/plugins/knowledge/ManageProjects.jsp?view=modifyProject&id=${project.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' color='light' />
+                    <@aButton href='jsp/admin/plugins/knowledge/ManageProjects.jsp?action=confirmRemoveProject&id=${project.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='light' />
+                </div>
+            </div>
+        </div>
+    </#list>
+</div>
+<@paginationAdmin paginator=paginator />
+
+</div>
+</@pageColumn>
+</@pageContainer>

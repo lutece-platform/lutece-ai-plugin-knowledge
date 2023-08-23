@@ -1,0 +1,97 @@
+.chat-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column
+}
+
+.chat-window {
+    flex-grow: 1;
+    overflow-y: auto
+}
+
+.input-area {
+    position: sticky;
+    bottom: 0;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, .05)
+}
+
+.btn-knowledge {
+    background-image: linear-gradient(-20deg, #b721ff 0%, #21d4fd 100%);
+    color: #fff !important;
+    border: none
+}
+
+.btn-knowledge span,
+.btn-knowledge i {
+    color: #fff !important
+}
+
+.sugar {
+    color: #0000000e !important;
+    font-size: 5rem !important;
+    font-weight: 900
+}
+
+#chat-scroll {
+    height: calc(100% - 130px);
+    padding: 60px;
+    position: relative
+}
+
+#chat-footer {
+    height: 100px;
+    position: sticky;
+    bottom: 0
+}
+
+.project-title-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1
+}
+
+.project-title {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333
+}
+
+.card-message p:last-child {
+    margin-bottom: 0
+}
+
+.card-message-user p {
+    margin-bottom: 0
+}
+
+.card-message-assistant  {
+    font-size: 0.9rem !important;
+
+}
+
+body[data-bs-theme=dark] .card-message-user {
+    background: #294b7f !important
+}
+
+body[data-bs-theme=dark] .card-message-assistant {
+    background: #011433 !important;
+
+}
+
+body[data-bs-theme=light] #chat-footer .form-control,
+body[data-bs-theme=light] #chat-footer .input-group-text {
+    background: #fff !important;
+    transition: none !important
+}
+
+#chat-footer .form-control:focus,
+#chat-footer .input-group-text:focus {
+    transition: none !important;
+    border: var(--bs-border-width) solid var(--bs-border-color)
+}
+
+.scrollable {
+    height: 100% !important
+}

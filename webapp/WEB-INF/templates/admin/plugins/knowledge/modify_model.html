@@ -1,0 +1,18 @@
+<@box>
+	<@boxHeader title='#i18n{knowledge.modify_model.title}' />
+	<@boxBody>
+    <@tform class="form-horizontal" method="post" name="modify_model" action="jsp/admin/plugins/knowledge/ManageModels.jsp" >
+			<@messages errors=errors />
+			<@input type="hidden" id="id" name="id" value="${model.id}"/>
+			<@input type="hidden" value="${token}" name="token" />
+			
+			<@formGroup labelFor='api_key' labelKey='#i18n{knowledge.modify_model.labelApiKey}' mandatory=true>
+				<@input type='text' id='api_key' name='api_key'  value='${model.apiKey!\'\'}' tabIndex='0' />
+			</@formGroup>
+			<@formGroup labelFor='url' labelKey='#i18n{knowledge.modify_model.labelUrl}' mandatory=true>
+				<@input type='text' id='url' name='url'  maxlength=255 value='${model.url!\'\'}' tabIndex='1' />
+			</@formGroup>
+        <@actionButtons button1Name="action_modifyModel" button2Name="view_manageModel"/>
+    </@tform>
+	</@boxBody>
+</@box>

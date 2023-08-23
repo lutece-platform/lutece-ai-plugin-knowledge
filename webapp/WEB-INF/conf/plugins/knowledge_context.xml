@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
+
+    <bean id="knowledge.modelDAO" class="fr.paris.lutece.plugins.knowledge.business.ModelDAO" />
+    <bean id="knowledge.documentDAO" class="fr.paris.lutece.plugins.knowledge.business.DocumentDAO" />
+    <bean id="knowledge.tagDAO" class="fr.paris.lutece.plugins.knowledge.business.TagDAO" />
+    <bean id="knowledge.embeddingDAO" class="fr.paris.lutece.plugins.knowledge.business.EmbeddingDAO" />
+    <bean id="knowledge.fineTuningDAO" class="fr.paris.lutece.plugins.knowledge.business.FineTuningDAO" />
+
+
+    <bean id="knowledge.projectDAO" class="fr.paris.lutece.plugins.knowledge.business.ProjectDAO" />
+    
+    <bean id="knowledge.projectRest" class="fr.paris.lutece.plugins.knowledge.rs.ProjectRest" />
+
+    <bean id="knowledge.swaggerRest" class="fr.paris.lutece.plugins.knowledge.rs.SwaggerRest" />
+
+
+
+</beans>

@@ -1,0 +1,32 @@
+<#include "knowledgeproject_tabs.html" />
+<@tabs2 tab="project" />
+
+<@box>
+	<@boxHeader title='#i18n{knowledge.modify_project.title}' />
+	<@boxBody>
+		<@tform class='form-horizontal' action='jsp/site/Portal.jsp' >
+				<@messages errors=errors />
+				<@input type="hidden" id="id" name="id"/>
+				<@input type="hidden" value="${token}" name="token" />
+				<@input type="hidden" name="page" value="project" /> 
+
+          		<@formGroup labelFor='title' labelKey='#i18n{knowledge.create_project.labelTitle}' helpKey='#i18n{knowledge.create_project.labelTitle.help}' mandatory=true>
+					<@input type="text" id="title" name="title" value="${project.title!''}"  tabIndex="1" />
+				</@formGroup>
+          		<@formGroup labelFor='description' labelKey='#i18n{knowledge.create_project.labelDescription}' helpKey='#i18n{knowledge.create_project.labelDescription.help}' mandatory=true>
+					<@input type="text" id="description" name="description" value="${project.description!''}"  tabIndex="2" />
+				</@formGroup>
+          		<@formGroup labelFor='model_id' labelKey='#i18n{knowledge.create_project.labelModelId}' helpKey='#i18n{knowledge.create_project.labelModelId.help}' mandatory=true>
+					<@input type="text" id="model_id" name="model_id" value="${project.modelId!''}"  tabIndex="3" />
+				</@formGroup>
+          		<@formGroup labelFor='prompt_system_id' labelKey='#i18n{knowledge.create_project.labelPromptSystemId}' helpKey='#i18n{knowledge.create_project.labelPromptSystemId.help}' mandatory=true>
+					<@input type="text" id="prompt_system_id" name="prompt_system_id" value="${project.promptSystemId!''}"  tabIndex="4" />
+				</@formGroup>
+        		<@formGroup>
+          			<@button name='action_createProject' type='submit' tabIndex='4' title='#i18n{portal.util.labelCreate}' buttonIcon='plus' />
+					<@button name='view_manageProjects' type='submit' title='#i18n{portal.util.labelCancel}' buttonIcon='close' color='btn-secondary' cancel=true />
+				</@formGroup>
+    </@tform>
+	</@boxBody>
+</@box>
+

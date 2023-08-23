@@ -1,0 +1,27 @@
+<@box>
+	<@boxHeader title='#i18n{knowledge.modify_finetuning.title}' />
+	<@boxBody>
+    <@tform class="form-horizontal" method="post" name="modify_finetuning" action="jsp/admin/plugins/knowledge/ManageFineTunings.jsp" >
+			<@messages errors=errors />
+			<@input type="hidden" id="id" name="id" value="${finetuning.id}"/>
+			<@input type="hidden" value="${token}" name="token" />
+			
+			<@formGroup labelFor='project_id' labelKey='#i18n{knowledge.modify_finetuning.labelProjectId}' mandatory=true>
+				<@input type='text' id='project_id' name='project_id'  value='${finetuning.projectId!\'\'}' tabIndex='0' />
+			</@formGroup>
+			<@formGroup labelFor='role' labelKey='#i18n{knowledge.modify_finetuning.labelRole}' mandatory=true>
+				<@input type='text' id='role' name='role'  value='${finetuning.role!\'\'}' tabIndex='1' />
+			</@formGroup>
+			<@formGroup labelFor='content' labelKey='#i18n{knowledge.modify_finetuning.labelContent}' mandatory=true>
+				<@input type='text' id='content' name='content'  value='${finetuning.content!\'\'}' tabIndex='2' />
+			</@formGroup>
+			<@formGroup labelFor='order' labelKey='#i18n{knowledge.modify_finetuning.labelOrder}' mandatory=true>
+				<@input type='text' id='order' name='order'  value='${finetuning.order!\'\'}' tabIndex='3' />
+			</@formGroup>
+			<@formGroup labelFor='conversation_id' labelKey='#i18n{knowledge.modify_finetuning.labelConversationId}' mandatory=true>
+				<@input type='text' id='conversation_id' name='conversation_id'  value='${finetuning.conversationId!\'\'}' tabIndex='4' />
+			</@formGroup>
+        <@actionButtons button1Name="action_modifyFineTuning" button2Name="view_manageFineTuning"/>
+    </@tform>
+	</@boxBody>
+</@box>

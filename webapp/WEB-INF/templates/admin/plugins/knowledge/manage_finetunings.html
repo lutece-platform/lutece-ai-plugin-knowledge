@@ -1,0 +1,51 @@
+<@box>
+	<@boxHeader title='#i18n{knowledge.manage_finetuning.title}' boxTools=true>
+		<@tform class='form-inline pull-right' name='manage_finetuning' action='jsp/admin/plugins/knowledge/ManageFineTunings.jsp'>
+			<@button type='submit' name='view_createFineTuning' buttonIcon='plus' title='#i18n{knowledge.manage_finetunings.buttonAdd}' />
+		</@tform>
+	</@boxHeader>
+	<@boxBody>    
+    <@messages infos=infos />
+    <@paginationAdmin paginator=paginator combo=1 />
+    <div class="clearfix"></div>
+    <@table>
+        <tr>
+            <th>#i18n{knowledge.manage_finetunings.columnProjectId}</th>
+            <th>#i18n{knowledge.manage_finetunings.columnRole}</th>
+            <th>#i18n{knowledge.manage_finetunings.columnContent}</th>
+            <th>#i18n{knowledge.manage_finetunings.columnOrder}</th>
+            <th>#i18n{knowledge.manage_finetunings.columnConversationId}</th>
+            <th>#i18n{portal.util.labelActions}</th>
+        </tr>
+        <@tableHeadBodySeparator />
+        <#list finetuning_list as finetuning >
+        <tr>
+            <td>
+				${finetuning.projectId}
+			</td>
+            <td>
+				${finetuning.role}
+			</td>
+            <td>
+				${finetuning.content}
+			</td>
+            <td>
+				${finetuning.order}
+			</td>
+            <td>
+				${finetuning.conversationId}
+			</td>
+        	<td>
+				<@aButton href='jsp/admin/plugins/knowledge/ManageFineTunings.jsp?view=modifyFineTuning&id=${finetuning.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
+						
+				<@aButton href='jsp/admin/plugins/knowledge/ManageFineTunings.jsp?action=confirmRemoveFineTuning&id=${finetuning.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
+
+	        </td>
+        </tr>
+        </#list>
+    </@table>
+
+    <@paginationAdmin paginator=paginator />
+
+  </@boxBody>
+</@box>

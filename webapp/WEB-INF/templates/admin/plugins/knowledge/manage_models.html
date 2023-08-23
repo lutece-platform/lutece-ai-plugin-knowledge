@@ -1,0 +1,39 @@
+<@box>
+	<@boxHeader title='#i18n{knowledge.manage_model.title}' boxTools=true>
+		<@tform class='form-inline pull-right' name='manage_model' action='jsp/admin/plugins/knowledge/ManageModels.jsp'>
+			<@button type='submit' name='view_createModel' buttonIcon='plus' title='#i18n{knowledge.manage_models.buttonAdd}' />
+		</@tform>
+	</@boxHeader>
+	<@boxBody>    
+    <@messages infos=infos />
+    <@paginationAdmin paginator=paginator combo=1 />
+    <div class="clearfix"></div>
+    <@table>
+        <tr>
+            <th>#i18n{knowledge.manage_models.columnApiKey}</th>
+            <th>#i18n{knowledge.manage_models.columnUrl}</th>
+            <th>#i18n{portal.util.labelActions}</th>
+        </tr>
+        <@tableHeadBodySeparator />
+        <#list model_list as model >
+        <tr>
+            <td>
+				${model.apiKey}
+			</td>
+            <td>
+				${model.url}
+			</td>
+        	<td>
+				<@aButton href='jsp/admin/plugins/knowledge/ManageModels.jsp?view=modifyModel&id=${model.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
+						
+				<@aButton href='jsp/admin/plugins/knowledge/ManageModels.jsp?action=confirmRemoveModel&id=${model.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
+
+	        </td>
+        </tr>
+        </#list>
+    </@table>
+
+    <@paginationAdmin paginator=paginator />
+
+  </@boxBody>
+</@box>

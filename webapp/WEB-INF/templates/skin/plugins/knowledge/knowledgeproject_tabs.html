@@ -1,0 +1,9 @@
+<#macro tabs2 tab >
+<@tabs>
+	<@tabList>
+			<li <#if tab="project">class="active"</#if>>
+				<a href="jsp/site/Portal.jsp?page=project">#i18n{knowledge.manage_projects.pageTitle}</a>
+			</li>
+	</@tabList>
+</@tabs>
+</#macro>

@@ -1,0 +1,143 @@
+<@pageContainer>
+    <@pageColumn id="chat-window" class="d-flex flex-column p-0 ">
+    <div id="chat-scroll" class="flex-grow-1 overflow-auto px-5">
+        <!-- Remplissez cette div avec un contenu assez long pour qu'il défile -->
+            <div class="d-flex   h-100 flex-column p-5">
+                <div class="row justify-content-center w-100">
+                     <div id="chat-messages" class="container">
+                    <@messages errors=errors />
+                    <#if ChatMemory?? && ChatMemory?has_content>
+                        <#assign chat2messages = ChatMemory.messages()>
+                        <#if chat2messages??>
+                                <#list chat2messages as message>
+                                <#assign message_type = (message?contains('AiMessage'))?then('Assistant', (message?contains('UserMessage'))?then('User', 'Unknown'))>
+                                <#assign start_text = message?index_of('text = "') + 8>
+                                <#assign end_text = message?index_of('"', start_text)>
+                                <#assign text = message?substring(start_text, end_text)>
+                                <#assign border_class = (message_type == 'Assistant')?then('bg-secondary2', 'border-secondary')>
+                                <#assign alignment_class = (message_type == 'Assistant')?then('justify-content-start', 'justify-content-end')>
+                                <div class="d-flex ${alignment_class} mb-3">
+                                    <div>
+                                        <#if message_type != "User">
+                                            <h3><i class="ti ti-robot"></i> ${message_type} <span class="badge border text-primary py-1 rounded-pill">GPT 3.5</span></h3>
+                                        </#if>
+                                        <div class="card ${border_class}">
+                                            <div class="card-body">
+                                                <p class="card-text">${text}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </#list>
+                        </#if>
+                    </#if>
+                </div>
+                </div>
+                    </div>
+    </div>  
+    <!-- Pied de page fixe -->
+    <footer id="chat-footer" class="text-center py-4 px-5">
+        <div class="input-area rounded-pill container p-0">
+            <@tform class="form-horizontal" method="post" name="modify_project" action="jsp/admin/plugins/knowledge/ManageProjects.jsp">
+                <@input type="hidden" id="id" name="id" value="${project.id}" />
+                <div class="input-group">
+                    <input type="text" name="question" class="form-control fs-3 px-5 py-3 rounded-pill rounded-end" placeholder="Tapez un message...">
+                    <@inputGroupItem class="">
+                    <select name="modelName" class="form-select rounded-pill">
+                        <option selected value="gpt-3.5-turbo">GPT-3.5-TURBO</option>
+                        <option value="gpt-3.5-turbo-0301">GPT-3.5-TURBO-0301</option>
+                        <option value="gpt-3.5-turbo-0613">GPT-3.5-TURBO-0613</option>
+                        <option value="gpt-3.5-turbo-16k">GPT-3.5-TURBO-16K</option>
+                        <option value="gpt-3.5-turbo-16k-0613">GPT-3.5-TURBO-16K-0613</option>
+                        <option value="gpt-4">GPT-4</option>
+                        <option value="gpt-4-0314">GPT-4-0314</option>
+                        <option value="gpt-4-0613">GPT-4-0613</option>
+                        <option value="gpt-4-32k">GPT-4-32K</option>
+                        <option value="gpt-4-32k-0314">GPT-4-32K-0314</option>
+                        <option value="gpt-4-32k-0613">GPT-4-32K-0613</option>
+                    </select>
+
+               
+                  </@inputGroupItem>
+
+
+                  <@inputGroupItem class="">
+
+                  <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Options
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="settingsDropdown">
+                        <div class="px-4 py-3">
+                          <div class="mb-3">
+                            <label for="temperature" class="form-label">Temperature:</label>
+                            <input type="text" id="temperature" name="temperature" class="form-control" value="">
+                          </div>
+                          <div class="mb-3">
+                            <label for="topP" class="form-label">Top P:</label>
+                            <input type="text" id="topP" name="topP" class="form-control" value="">
+                          </div>
+                          <div class="mb-3">
+                            <label for="maxTokens" class="form-label">Max Tokens:</label>
+                            <input type="text" id="maxTokens" name="maxTokens" class="form-control" value="">
+                          </div>
+                          <div class="mb-3">
+                            <label for="presencePenalty" class="form-label">Presence Penalty:</label>
+                            <input type="text" id="presencePenalty" name="presencePenalty" class="form-control" value="">
+                          </div>
+                          <div class="mb-3">
+                            <label for="frequencyPenalty" class="form-label">Frequency Penalty:</label>
+                            <input type="text" id="frequencyPenalty" name="frequencyPenalty" class="form-control" value="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </@inputGroupItem>
+                    <@inputGroupItem class="">
+                        <a href="jsp/admin/plugins/knowledge/ManageProjects.jsp?view=viewProject&id=${project.id}&clear=true" class="btn btn-light  btn-knowledge" type="button" id="button-addon2"><i class="ti ti-rotate-clockwise-2"></i> nouvelle conversation</a>
+                    </@inputGroupItem>
+                    <button class="btn rounded-pill rounded-start pe-5" type="submit" id="button-addon2" name="action_answerProject"><i class="ti ti-player-play-filled"></i></button>
+                </div>
+            </@tform>
+        </div>    </footer>
+</@pageColumn>
+  <@pageColumn width="25rem">
+        <@pageHeader title="Fichiers">
+		<@tform method='post' action='jsp/admin/plugins/knowledge/ManageProjects.jsp'>
+			<@input type="hidden" id="id" name="id" value="${project.id}" />
+            <@button type='submit' name="action_embeddingProjectDocuments" buttonIcon='play' title='Incorporer' color='' size='' />
+		</@tform>
+        </@pageHeader>
+        <div class="list-group mt-4 mb-4">
+            <#list document_list as document>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="text-truncate me-3" title="${document.documentName}"><i class="ti ti-file-type-pdf"></i> ${document.documentName}</div>
+                    <div><button type="button" class="btn btn-light btn-sm"><i class="ti ti-trash"></i></button></div>
+                </div>
+            </#list>
+        </div>
+        <@tform method='post' action='jsp/admin/plugins/knowledge/ManageProjects.jsp' params='enctype="multipart/form-data"'>
+            <div class="d-flex align-items-center">
+				<input type="file" class="" id="file" name="file" accept=".pdf,.doc,.docx">
+                <button type="button" class="btn btn-primary" onclick="triggerFileSelect()"><i class="ti ti-plus"></i></button>
+                <@button type='submit' name="action_addProjectDocument" buttonIcon='plus' title='Ajouter' color='primary' size='' />
+            </div>
+        </@tform>
+    </@pageColumn>
+</@pageContainer>
+<link href="css/admin/plugins/knowledge/knowledge.css" rel="stylesheet" type="text/css" />
+<script src="js/admin/plugins/knowledge/markdown-it.min.js"></script>
+<script src="js/admin/plugins/knowledge/knowledge-chat.js"></script>
+<script>
+<#noparse>
+document.addEventListener('DOMContentLoaded', () => {
+    const chatMessages = document.getElementById('chat-messages');
+    const inputField = document.querySelector('input[name="question"]');
+    const selectField = document.querySelector('select[name="modelName"]');
+
+
+    const knowledgeChat = new KnowledgeChat();
+    knowledgeChat.initialize(chatMessages, inputField, selectField);
+});
+</#noparse>
+</script>
