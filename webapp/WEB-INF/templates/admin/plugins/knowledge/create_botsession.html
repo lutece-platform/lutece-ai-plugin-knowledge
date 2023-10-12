@@ -1,0 +1,28 @@
+<#include "managebots_tabs.html" />
+<@tabs2 tab="botsession" />
+<@box>
+	<@boxHeader title='#i18n{knowledge.create_botsession.title}' />
+	<@boxBody>
+    <@tform name='create_botsession' action='jsp/admin/plugins/knowledge/ManageBotSessions.jsp' >
+
+        <@messages errors=errors />
+        <@input type="hidden" id="id" name="id"/>
+        <@input type="hidden" value="${token}" name="token" />
+
+		<@formGroup labelFor='user_id' labelKey='#i18n{knowledge.modify_botsession.labelUserId}' mandatory=true>
+			<@input type='text' id='user_id' name='user_id'  value='${botsession.userId!\'\'}' tabIndex='0' />
+		</@formGroup>
+		<@formGroup labelFor='creation_date' labelKey='#i18n{knowledge.modify_botsession.labelCreationDate}' mandatory=true>
+			<@input type='text' id='creation_date' name='creation_date'  value='${botsession.creationDate!\'\'}' tabIndex='1' />
+		</@formGroup>
+		<@formGroup labelFor='content' labelKey='#i18n{knowledge.modify_botsession.labelContent}' mandatory=true>
+			<@input type='text' id='content' name='content'  value='${botsession.content!\'\'}' tabIndex='2' />
+		</@formGroup>
+		<@formGroup labelFor='bot_id' labelKey='#i18n{knowledge.modify_botsession.labelBotId}' mandatory=true>
+			<@input type='text' id='bot_id' name='bot_id'  value='${botsession.botId!\'\'}' tabIndex='3' />
+		</@formGroup>
+				
+		<@actionButtons button1Name="action_createBotSession" button2Name="view_manageBotSession"/>
+    </@tform>
+	</@boxBody>
+</@box>

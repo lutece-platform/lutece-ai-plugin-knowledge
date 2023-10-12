@@ -55,11 +55,14 @@ public final class Constants
     public static final String ERROR_NOT_FOUND_RESOURCE = "Resource not found";
     public static final String ERROR_BAD_REQUEST_EMPTY_PARAMETER = "Empty parameter";
 
-    public static final String PROJECT_PATH = "/projects";
-    public static final String PROJECT_ATTRIBUTE_TITLE = "title";
-    public static final String PROJECT_ATTRIBUTE_DESCRIPTION = "description";
-    public static final String PROJECT_ATTRIBUTE_MODEL_ID = "model_id";
-    public static final String PROJECT_ATTRIBUTE_PROMPT_SYSTEM_ID = "prompt_system_id";
+    public static final String BOT_PATH = "/bots";
+    public static final String BOT_ATTRIBUTE_NAME = "name";
+    public static final String BOT_ATTRIBUTE_DESCRIPTION = "description";
+    public static final String BOT_ATTRIBUTE_STORY = "story";
+    public static final String BOT_ATTRIBUTE_DATASET_ID = "dataset_id";
+    public static final String BOT_ATTRIBUTE_TOOLSET_ID = "toolset_id";
+    public static final String BOT_ATTRIBUTE_MODEL_ID = "model_id";
+    public static final String BOT_ATTRIBUTE_TYPE_ID = "type_id";
 
     /**
      * Private constructor

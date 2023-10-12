@@ -1,62 +1,90 @@
--- Structure for table knowledge_model
-DROP TABLE IF EXISTS knowledge_model;
-CREATE TABLE knowledge_model (
-  id_model int AUTO_INCREMENT,
-  api_key longtext NOT NULL,
-  url varchar(255) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id_model)
+
+--
+-- Structure for table knowledge_bot
+--
+
+DROP TABLE IF EXISTS knowledge_bot;
+CREATE TABLE knowledge_bot (
+id_bots int AUTO_INCREMENT,
+name varchar(255) default '' NOT NULL,
+description long varchar,
+story long varchar,
+dataset_id int default '0',
+toolset_id int default '0',
+model_id varchar(255) default '' NOT NULL,
+type_id long varchar NOT NULL,
+PRIMARY KEY (id_bots)
 );
 
--- Structure for table knowledge_project
-DROP TABLE IF EXISTS knowledge_project;
-CREATE TABLE knowledge_project (
-  id_project int AUTO_INCREMENT,
-  title longtext NOT NULL,
-  description varchar(255) DEFAULT '' NOT NULL,
-  model_id int DEFAULT '0' NOT NULL,
-  prompt_system_id int DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id_project)
+--
+-- Structure for table knowledge_dataset
+--
+
+DROP TABLE IF EXISTS knowledge_dataset;
+CREATE TABLE knowledge_dataset (
+id_dataset int AUTO_INCREMENT,
+name varchar(255) default '' NOT NULL,
+description long varchar,
+record_max_tokens int default '0' NOT NULL,
+search_max_record int default '0' NOT NULL,
+search_max_tokens int default '0' NOT NULL,
+match_instruction long varchar NOT NULL,
+mismatch_instruction long varchar NOT NULL,
+PRIMARY KEY (id_dataset)
 );
 
--- Structure for table knowledge_document
-DROP TABLE IF EXISTS knowledge_document;
-CREATE TABLE knowledge_document (
-  id int AUTO_INCREMENT,
-  document_name longtext NOT NULL,
-  document_data longtext NOT NULL,
-  project_id int DEFAULT '0' NOT NULL,
-  is_embedding boolean DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id)
+--
+-- Structure for table knowledge_dataset_file
+--
+
+DROP TABLE IF EXISTS knowledge_dataset_file;
+CREATE TABLE knowledge_dataset_file (
+id_dataset_files int AUTO_INCREMENT,
+name long varchar NOT NULL,
+description long varchar,
+dataset_id int default '0',
+file_key long varchar NOT NULL,
+PRIMARY KEY (id_dataset_files)
 );
 
--- Structure for table knowledge_tag
-DROP TABLE IF EXISTS knowledge_tag;
-CREATE TABLE knowledge_tag (
-  id_tags int AUTO_INCREMENT,
-  tag_name varchar(255) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id_tags)
+--
+-- Structure for table knowledge_toolset
+--
+
+DROP TABLE IF EXISTS knowledge_toolset;
+CREATE TABLE knowledge_toolset (
+id_tool_set int AUTO_INCREMENT,
+name long varchar NOT NULL,
+description long varchar,
+PRIMARY KEY (id_tool_set)
 );
 
--- Structure for table knowledge_embedding
-DROP TABLE IF EXISTS knowledge_embedding;
-CREATE TABLE knowledge_embedding (
-  id_embedding int AUTO_INCREMENT,
-  project_id int DEFAULT '0' NOT NULL,
-  vectors longtext NOT NULL,
-  metadata longtext,
-  text_segment longtext NOT NULL,
-  file_id longtext NOT NULL,
-  PRIMARY KEY (id_embedding)
+--
+-- Structure for table knowledge_toolset_ability
+--
+
+DROP TABLE IF EXISTS knowledge_toolset_ability;
+CREATE TABLE knowledge_toolset_ability (
+id_tool_set_ability int AUTO_INCREMENT,
+name long varchar NOT NULL,
+description long varchar,
+instruction long varchar NOT NULL,
+toolset_id int default '0' NOT NULL,
+PRIMARY KEY (id_tool_set_ability)
 );
 
--- Structure for table knowledge_fine_tuning
-DROP TABLE IF EXISTS knowledge_fine_tuning;
-CREATE TABLE knowledge_fine_tuning (
-  id_fine_tuning int AUTO_INCREMENT,
-  project_id int DEFAULT '0' NOT NULL,
-  role longtext NOT NULL,
-  content longtext NOT NULL,
-  `order` int DEFAULT '0' NOT NULL,
-  conversation_id int DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id_fine_tuning)
+--
+-- Structure for table knowledge_bot_session
+--
+
+DROP TABLE IF EXISTS knowledge_bot_session;
+CREATE TABLE knowledge_bot_session (
+id_bot_session int AUTO_INCREMENT,
+user_id int default '0' NOT NULL,
+creation_date date NOT NULL,
+content long varchar NOT NULL,
+bot_id int default '0' NOT NULL,
+user_access_code long varchar NOT NULL,
+session_id long varchar NOT NULL,
+PRIMARY KEY (id_bot_session)
 );

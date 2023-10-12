@@ -1,47 +1,31 @@
-/*
- * Copyright (c) 2002-2023, City of Paris
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *  1. Redistributions of source code must retain the above copyright notice
- *     and the following disclaimer.
- *
- *  2. Redistributions in binary form must reproduce the above copyright notice
- *     and the following disclaimer in the documentation and/or other materials
- *     provided with the distribution.
- *
- *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
- *     contributors may be used to endorse or promote products derived from
- *     this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * License 1.0
- */
 package fr.paris.lutece.plugins.knowledge.service;
 
-import dev.langchain4j.memory.chat.MessageWindowChatMemory;
+import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.store.memory.chat.ChatMemoryStore;
+import fr.paris.lutece.plugins.knowledge.business.Bot;
+import fr.paris.lutece.plugins.knowledge.business.BotSession;
+import fr.paris.lutece.plugins.knowledge.business.BotSessionHome;
+import fr.paris.lutece.plugins.knowledge.rs.RequestData;
+import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.security.SecurityService;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
+
+
+import static dev.langchain4j.data.message.ChatMessageDeserializer.messagesFromJson;
+import static dev.langchain4j.data.message.ChatMessageSerializer.messagesToJson;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChatMemoryService
 {
     private static final String ATTRIBUTE_CHAT_MEMORY_MAP = "CHAT_MEMORY_MAP";
-
+    
     /**
      * Retrieves a chat memory associated with the given project ID from the provided session. If no chat memory exists for the given project ID, a new one is
      * created.
@@ -53,57 +37,75 @@ public class ChatMemoryService
      * @return The associated MessageWindowChatMemory object or a new one if none exists.
      */
     @SuppressWarnings( "unchecked" )
-    public static MessageWindowChatMemory getChatMemory( HttpSession session, Integer projectId )
-    {
-        Map<Integer, MessageWindowChatMemory> chatMemoryMap = (HashMap<Integer, MessageWindowChatMemory>) session.getAttribute( ATTRIBUTE_CHAT_MEMORY_MAP );
-
-        if ( chatMemoryMap == null )
-        {
-            chatMemoryMap = new HashMap<>( );
-            session.setAttribute( ATTRIBUTE_CHAT_MEMORY_MAP, chatMemoryMap );
+    public static Pair<PersistentChatMemoryStore, String> getChatMemory(HttpServletRequest request, RequestData data, Bot bot, String sessionId ) {
+        LuteceUser luteceUser = SecurityService.getInstance().getRegisteredUser(request);
+        HttpSession session = request.getSession();
+         PersistentChatMemoryStore chatMemoryStore = null;
+    
+        Map<String, PersistentChatMemoryStore> chatMemoryStoreMap = (Map<String, PersistentChatMemoryStore>) session.getAttribute(ATTRIBUTE_CHAT_MEMORY_MAP);
+    
+        if (chatMemoryStoreMap == null) {
+            chatMemoryStoreMap = new HashMap<>();
+            session.setAttribute(ATTRIBUTE_CHAT_MEMORY_MAP, chatMemoryStoreMap);
         }
 
-        MessageWindowChatMemory messageWindowChatMemory = chatMemoryMap.get( projectId );
 
-        if ( messageWindowChatMemory == null )
-        {
-            messageWindowChatMemory = MessageWindowChatMemory.withMaxMessages( 5 );
-            chatMemoryMap.put( projectId, messageWindowChatMemory );
+        if( data.getBotSessionId() != null ) {
+            chatMemoryStore = chatMemoryStoreMap.get( data.getBotSessionId() );
         }
 
-        return messageWindowChatMemory;
-    }
+        String botSessionId;
 
-    /**
-     * Resets the chat memory for the specified project ID in the provided session.
-     * 
-     * @param session
-     *            The current HTTP session.
-     * @param projectId
-     *            The ID of the project for which the chat memory is to be reset.
-     */
-    public static void resetChatMemory( HttpSession session, Integer projectId )
-    {
-        Map<Integer, MessageWindowChatMemory> chatMemoryMap = getChatMemoryMap( session );
-        chatMemoryMap.put( projectId, MessageWindowChatMemory.withMaxMessages( 5 ) );
-    }
-
-    /**
-     * Retrieves the chat memory map from the provided session. If the map doesn't exist in the session, a new one is created.
-     * 
-     * @param session
-     *            The current HTTP session.
-     * @return The existing chat memory map or a new one if none exists.
-     */
-    private static Map<Integer, MessageWindowChatMemory> getChatMemoryMap( HttpSession session )
-    {
-        Object object = session.getAttribute( ATTRIBUTE_CHAT_MEMORY_MAP );
-        if ( object == null || !( object instanceof Map ) )
-        {
-            Map<Integer, MessageWindowChatMemory> newMap = new HashMap<>( );
-            session.setAttribute( ATTRIBUTE_CHAT_MEMORY_MAP, newMap );
-            return newMap;
+        if (chatMemoryStore == null) {
+            if (data.getBotSessionId() != null) {
+                BotSession botSession = BotSessionHome.findByAccessCode( luteceUser.getAccessCode(), data.getBotSessionId() ).get();
+                chatMemoryStore = new PersistentChatMemoryStore();
+                chatMemoryStore.updateMessages(botSession.getSessionId(), messagesFromJson(botSession.getContent()));
+                chatMemoryStoreMap.put( botSession.getSessionId() , chatMemoryStore);
+                botSessionId = botSession.getSessionId();
+            } else {
+                BotSession botSession = createNewBotSession(bot, sessionId, luteceUser );
+                chatMemoryStore = new PersistentChatMemoryStore();
+                chatMemoryStoreMap.put(sessionId, chatMemoryStore);
+                botSessionId = botSession.getSessionId();
+            }
+        } else {
+            botSessionId = data.getBotSessionId();
         }
-        return (Map<Integer, MessageWindowChatMemory>) object;
+    
+        return new ImmutablePair<>(chatMemoryStore, botSessionId);
     }
+
+    private static BotSession createNewBotSession(Bot bot, String sessionId, LuteceUser luteceUser ) {
+        long timestamp = System.currentTimeMillis();
+        BotSession botSession = new BotSession();
+        botSession.setCreationDate(new java.sql.Date(timestamp));
+        botSession.setBotId(bot.getId());
+        botSession.setAccessCode( luteceUser.getAccessCode( ) );
+        botSession.setSessionId( sessionId );
+        return BotSessionHome.create(botSession);
+    }
+
+      static class PersistentChatMemoryStore implements ChatMemoryStore {
+        @Override
+        public List<ChatMessage> getMessages(Object memoryId) {
+
+        BotSession botSession = BotSessionHome.findBySessionId( (String) memoryId ).get( );
+        return messagesFromJson( botSession.getContent( ) );
+        }
+
+        @Override
+        public void updateMessages(Object memoryId, List<ChatMessage> messages) {
+
+            BotSession botSession = BotSessionHome.findBySessionId( (String) memoryId ).get( );
+            botSession.setContent( messagesToJson( messages ) );
+            BotSessionHome.update( botSession );
+        }
+
+        @Override
+        public void deleteMessages(Object memoryId) {
+            BotSessionHome.remove( (int) memoryId );
+        }
+    }
+
 }

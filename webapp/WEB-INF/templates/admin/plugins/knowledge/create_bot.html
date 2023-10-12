@@ -1,0 +1,66 @@
+<#include "managebots_tabs.html" />
+<@pageContainer>
+	<@tabs2 tab="bot" />
+	<@pageColumn class=" bg-secondary ">
+		<div class="container" style="max-width: 60rem;">
+			<@pageHeader title='#i18n{knowledge.create_bot.title}'
+				description="Un bot est un logiciel automatis&eacute; con&ccedil;u pour engager une conversation avec des utilisateurs humains via divers canaux de messagerie et de communication." />
+			<@messages errors=errors />
+			<@tform boxed=true name='create_bot' action='jsp/admin/plugins/knowledge/ManageBots.jsp'>
+				<@messages errors=errors />
+				<@input type="hidden" id="id" name="id" />
+				<@input type="hidden" value="${token}" name="token" />
+
+				<@formGroup labelFor='name' labelKey='#i18n{knowledge.modify_bot.labelName}' mandatory=true>
+					<@input type='text' id='name' name='name' maxlength=255 value='${bot.name!\' \'}' tabIndex='0' />
+					Tapez n’importe quel nom pour reconna&icirc;tre l’int&eacute;gration des autres.
+				</@formGroup>
+				<@formGroup labelFor='description' labelKey='#i18n{knowledge.modify_bot.labelDescription}'
+					mandatory=true>
+					<@input type='text' id='description' name='description' value='${bot.description!\' \'}'
+						tabIndex='1' />
+					&Eacute;crivez &eacute;ventuellement une description.
+				</@formGroup>
+				<@formGroup labelFor='type_id' labelKey='#i18n{knowledge.modify_bot.labelTypeId}' mandatory=true>
+					<select name="type_id" id="type_id" class="form-control form-select">
+						<option value="chatbot" <#if bot.typeId?has_content && bot.typeId = "chatbot">selected</#if>>chatbot</option>
+						<option value="audio" <#if bot.typeId?has_content && bot.typeId = "audio">selected</#if>>audio</option>
+					</select>
+					Choisissez le type de bot que vous souhaitez cr&eacute;er.
+				</@formGroup>
+				<hr>
+				<@formGroup labelFor='story' labelKey='#i18n{knowledge.modify_bot.labelStory}' mandatory=true>
+					<@input type='textarea' id='story' name='story' value='${bot.story!\' \'}' tabIndex='2' />
+					&Eacute;crivez l'histoire du chatbot pour d&eacute;finir son comportement. Pour plus d’informations
+					sur la fa&ccedil;on d’&eacute;crire de superbes histoires, consultez ce didacticiel.
+				</@formGroup>
+
+				<@formGroup labelFor='model_id' labelKey='#i18n{knowledge.modify_bot.labelModelId}' mandatory=true>
+					<@input type='text' id='model_id' name='model_id' maxlength=255 value='${bot.modelId!\' \'}'
+						tabIndex='5' />
+					Mod&egrave;le facultatif &agrave; utiliser pour ce bot. Pour plus d’informations sur la fa&ccedil;on
+					de s&eacute;lectionner le meilleur mod&egrave;le, consultez le didacticiel suivant.
+				</@formGroup>
+
+				<hr>
+				<@formGroup labelFor='dataset_id' labelKey='#i18n{knowledge.modify_bot.labelDatasetId}' mandatory=true>
+					Ensemble de donn&eacute;es facultatif &agrave; utiliser pour ce bot.
+					<select id="dataset_id" name="dataset_id" class="form-control form-select">
+						<option value="">Aucun</option>
+						<option value="0" <#if bot.datasetId?has_content && bot.datasetId = 0>selected</#if>>Cr&eacute;&eacute; un nouvelle ensemble de donn&eacute;es</option>
+						<#list dataset_list as dataset>
+						<option value="${dataset.id}" <#if bot.datasetId?has_content && bot.datasetId = dataset.id>selected</#if>>${dataset.name}</option>
+						</#list>
+					</select>
+				</@formGroup>
+				<@formGroup labelFor='toolset_id' labelKey='#i18n{knowledge.modify_bot.labelToolsetId}' mandatory=true>
+					<@input type='text' id='toolset_id' name='toolset_id' value='${bot.toolsetId!\' \'}' tabIndex='4' />
+					Comp&eacute;tences facultatives &agrave; utiliser pour ce bot.
+				</@formGroup>
+				<div class="float-end">
+					<@actionButtons button1Name="action_createBot" button2Name="view_manageBot" />
+				</div>
+			</@tform>
+		</div>
+	</@pageColumn>
+</@pageContainer>

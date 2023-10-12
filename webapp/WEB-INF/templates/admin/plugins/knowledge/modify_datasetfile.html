@@ -1,0 +1,25 @@
+<#include "managebots_tabs.html" />
+<@tabs2 tab="datasetfile" />
+
+
+<@box>
+	<@boxHeader title='#i18n{knowledge.modify_datasetfile.title}' />
+	<@boxBody>
+    <@tform class="form-horizontal" method="post" name="modify_datasetfile" action="jsp/admin/plugins/knowledge/ManageDatasetFiles.jsp" >
+			<@messages errors=errors />
+			<@input type="hidden" id="id" name="id" value="${datasetfile.id}"/>
+			<@input type="hidden" value="${token}" name="token" />
+			
+			<@formGroup labelFor='name' labelKey='#i18n{knowledge.modify_datasetfile.labelName}' mandatory=true>
+				<@input type='text' id='name' name='name'  value='${datasetfile.name!\'\'}' tabIndex='0' />
+			</@formGroup>
+			<@formGroup labelFor='description' labelKey='#i18n{knowledge.modify_datasetfile.labelDescription}' mandatory=true>
+				<@input type='text' id='description' name='description'  value='${datasetfile.description!\'\'}' tabIndex='1' />
+			</@formGroup>
+			<@formGroup labelFor='dataset_id' labelKey='#i18n{knowledge.modify_datasetfile.labelDatasetId}' mandatory=true>
+				<@input type='text' id='dataset_id' name='dataset_id'  value='${datasetfile.datasetId!\'\'}' tabIndex='2' />
+			</@formGroup>
+        <@actionButtons button1Name="action_modifyDatasetFile" button2Name="view_manageDatasetFile"/>
+    </@tform>
+	</@boxBody>
+</@box>

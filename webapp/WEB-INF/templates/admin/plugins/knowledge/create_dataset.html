@@ -1,0 +1,37 @@
+<#include "managebots_tabs.html" />
+<@tabs2 tab="dataset" />
+<@box>
+	<@boxHeader title='#i18n{knowledge.create_dataset.title}' />
+	<@boxBody>
+    <@tform name='create_dataset' action='jsp/admin/plugins/knowledge/ManageDatasets.jsp' >
+
+        <@messages errors=errors />
+        <@input type="hidden" id="id" name="id"/>
+        <@input type="hidden" value="${token}" name="token" />
+
+		<@formGroup labelFor='name' labelKey='#i18n{knowledge.modify_dataset.labelName}' mandatory=true>
+			<@input type='text' id='name' name='name'  maxlength=255 value='${dataset.name!\'\'}' tabIndex='0' />
+		</@formGroup>
+		<@formGroup labelFor='description' labelKey='#i18n{knowledge.modify_dataset.labelDescription}' mandatory=true>
+			<@input type='text' id='description' name='description'  value='${dataset.description!\'\'}' tabIndex='1' />
+		</@formGroup>
+		<@formGroup labelFor='record_max_tokens' labelKey='#i18n{knowledge.modify_dataset.labelRecordMaxTokens}' mandatory=true>
+			<@input type='text' id='record_max_tokens' name='record_max_tokens'  value='${dataset.recordMaxTokens!\'\'}' tabIndex='2' />
+		</@formGroup>
+		<@formGroup labelFor='search_max_record' labelKey='#i18n{knowledge.modify_dataset.labelSearchMaxRecord}' mandatory=true>
+			<@input type='text' id='search_max_record' name='search_max_record'  value='${dataset.searchMaxRecord!\'\'}' tabIndex='3' />
+		</@formGroup>
+		<@formGroup labelFor='search_max_tokens' labelKey='#i18n{knowledge.modify_dataset.labelSearchMaxTokens}' mandatory=true>
+			<@input type='text' id='search_max_tokens' name='search_max_tokens'  value='${dataset.searchMaxTokens!\'\'}' tabIndex='4' />
+		</@formGroup>
+		<@formGroup labelFor='match_instruction' labelKey='#i18n{knowledge.modify_dataset.labelMatchInstruction}' mandatory=true>
+			<@input type='text' id='match_instruction' name='match_instruction'  value='${dataset.matchInstruction!\'\'}' tabIndex='5' />
+		</@formGroup>
+		<@formGroup labelFor='mismatch_instruction' labelKey='#i18n{knowledge.modify_dataset.labelMismatchInstruction}' mandatory=true>
+			<@input type='text' id='mismatch_instruction' name='mismatch_instruction'  value='${dataset.mismatchInstruction!\'\'}' tabIndex='6' />
+		</@formGroup>
+				
+		<@actionButtons button1Name="action_createDataset" button2Name="view_manageDataset"/>
+    </@tform>
+	</@boxBody>
+</@box>

@@ -9,17 +9,17 @@
         "application/json"
     ],
     "paths": {
-        "/projects": {
+        "/bots": {
             "get": {
-                "description": "Get Project list",
+                "description": "Get Bot list",
                 "tags": [
-                    "Project"
+                    "Bot"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return the Project list",
+                        "description": "Return the Bot list",
                         "schema": {
-                            "$ref": "#/definitions/ProjectListResult"
+                            "$ref": "#/definitions/BotListResult"
                         }
                     },
                     "204": {
@@ -37,15 +37,15 @@
                 }
             },
             "post": {
-                "description": "Create Project",
+                "description": "Create Bot",
                 "tags": [
-                    "Project"
+                    "Bot"
                 ],
                 "parameters": [
                     {
-                        "name": "title",
+                        "name": "name",
                         "in": "formData",
-                        "description": "title",
+                        "description": "name",
                         "required": true,
                         "type": "string"
                     },
@@ -57,6 +57,27 @@
                         "type": "string"
                     },
                     {
+                        "name": "story",
+                        "in": "formData",
+                        "description": "story",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "dataset_id",
+                        "in": "formData",
+                        "description": "dataset_id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "toolset_id",
+                        "in": "formData",
+                        "description": "toolset_id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "name": "model_id",
                         "in": "formData",
                         "description": "model_id",
@@ -64,18 +85,18 @@
                         "type": "string"
                     },
                     {
-                        "name": "prompt_system_id",
+                        "name": "type_id",
                         "in": "formData",
-                        "description": "prompt_system_id",
+                        "description": "type_id",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return the Project created",
+                        "description": "Return the Bot created",
                         "schema": {
-                            "$ref": "#/definitions/ProjectResult"
+                            "$ref": "#/definitions/BotResult"
                         }
                     },
                     "400": {
@@ -93,26 +114,26 @@
                 }
             }
         },
-        "/projects/{id}": {
+        "/bots/{id}": {
             "get": {
-                "description": "Get Project",
+                "description": "Get Bot",
                 "tags": [
-                    "Project"
+                    "Bot"
                 ],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the Project",
+                        "description": "ID of the Bot",
                         "required": true,
                         "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return the Project",
+                        "description": "Return the Bot",
                         "schema": {
-                            "$ref": "#/definitions/ProjectResult"
+                            "$ref": "#/definitions/BotResult"
                         }
                     },
                     "404": {
@@ -130,22 +151,22 @@
                 }
             },
             "put": {
-                "description": "Modify Project",
+                "description": "Modify Bot",
                 "tags": [
-                    "Project"
+                    "Bot"
                 ],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the Project to modify",
+                        "description": "ID of the Bot to modify",
                         "required": true,
                         "type": "integer"
                     },
                     {
-                        "name": "title",
+                        "name": "name",
                         "in": "formData",
-                        "description": "title",
+                        "description": "name",
                         "required": true,
                         "type": "string"
                     },
@@ -157,6 +178,27 @@
                         "type": "string"
                     },
                     {
+                        "name": "story",
+                        "in": "formData",
+                        "description": "story",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "dataset_id",
+                        "in": "formData",
+                        "description": "dataset_id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "toolset_id",
+                        "in": "formData",
+                        "description": "toolset_id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "name": "model_id",
                         "in": "formData",
                         "description": "model_id",
@@ -164,18 +206,18 @@
                         "type": "string"
                     },
                     {
-                        "name": "prompt_system_id",
+                        "name": "type_id",
                         "in": "formData",
-                        "description": "prompt_system_id",
+                        "description": "type_id",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return the Project modified",
+                        "description": "Return the Bot modified",
                         "schema": {
-                            "$ref": "#/definitions/ProjectResult"
+                            "$ref": "#/definitions/BotResult"
                         }
                     },
                     "400": {
@@ -199,22 +241,22 @@
                 }
             },
             "delete": {
-                "description": "Delete Project",
+                "description": "Delete Bot",
                 "tags": [
-                    "Project"
+                    "Bot"
                 ],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the Project to delete",
+                        "description": "ID of the Bot to delete",
                         "required": true,
                         "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Return the Project deleted (No Content)",
+                        "description": "Return the Bot deleted (No Content)",
                         "schema": {
                             "$ref": "#/definitions/NoContent"
                         }
@@ -261,13 +303,13 @@
                 }
             }
         },
-        "ProjectListResult": {
+        "BotListResult": {
             "type": "object",
             "properties": {
                 "result": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Project"
+                        "$ref": "#/definitions/Bot"
                     }
                 },
                 "status": {
@@ -275,33 +317,42 @@
                 }
             }
         },
-        "ProjectResult": {
+        "BotResult": {
             "type": "object",
             "properties": {
                 "result": {
-                    "$ref": "#/definitions/Project"
+                    "$ref": "#/definitions/Bot"
                 },
                 "status": {
                     "type": "string"
                 }
             }
         },
-        "Project": {
+        "Bot": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "integer"
                 },
-                "title": {
+                "name": {
                     "type": "string"
                 },
                 "description": {
                     "type": "string"
                 },
+                "story": {
+                    "type": "string"
+                },
+                "dataset_id": {
+                    "type": "string"
+                },
+                "toolset_id": {
+                    "type": "string"
+                },
                 "model_id": {
                     "type": "string"
                 },
-                "prompt_system_id": {
+                "type_id": {
                     "type": "string"
                 }
             }

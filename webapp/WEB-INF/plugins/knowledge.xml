@@ -9,7 +9,7 @@
     <user-guide></user-guide>
     <description>knowledge.plugin.description</description>
     <provider>knowledge.plugin.provider</provider>
-    <provider-url>https://lutece.paris.fr</provider-url>
+    <provider-url>http://lutece.paris.fr</provider-url>
     <icon-url>images/admin/skin/feature_default_icon.png</icon-url>
     <copyright>Mairie de Paris</copyright>
     <db-pool-required>1</db-pool-required>
@@ -22,11 +22,11 @@
     <!-- Admin features parameters -->
     <admin-features>
         <admin-feature>
-            <feature-id>KNOWLEDGE_MANAGEMENT</feature-id>
-            <feature-title>knowledge.adminFeature.KnowledgeManager.name</feature-title>
-            <feature-description>knowledge.adminFeature.KnowledgeManager.description</feature-description>
+            <feature-id>KNOWLEDGE_MANAGEMENT_BOTS</feature-id>
+            <feature-title>knowledge.adminFeature.ManageBots.name</feature-title>
+            <feature-description>knowledge.adminFeature.ManageBots.description</feature-description>
             <feature-level>0</feature-level>
-            <feature-url>jsp/admin/plugins/knowledge/ManageProjects.jsp</feature-url>
+            <feature-url>jsp/admin/plugins/knowledge/ManageBots.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
         </admin-feature>
     </admin-features>
@@ -34,8 +34,8 @@
     <!-- XPages parameters -->
     <applications>
         <application>
-            <application-id>project</application-id>
-            <application-class>fr.paris.lutece.plugins.knowledge.web.ProjectXPage</application-class>
+            <application-id>bot</application-id>
+            <application-class>fr.paris.lutece.plugins.knowledge.web.BotXPage</application-class>
         </application>
     </applications>
 
