@@ -1,0 +1,49 @@
+<#include "managebots_tabs.html" />
+<@pageContainer>
+<@tabs2 tab="bot" />
+    <@pageColumn>
+        <@pageHeader title='#i18n{knowledge.manage_datasets.title}'>
+            <@tform class='form-inline pull-right' name='manage_dataset' action='jsp/admin/plugins/knowledge/ManageDatasets.jsp'>
+                <@button type='submit' name='view_createDataset' buttonIcon='plus' title='#i18n{knowledge.manage_datasets.buttonAdd}' />
+            </@tform>
+        </@pageHeader>
+        <@messages infos=infos />
+        <@table headBody=true>
+            <@tr>
+                <@th>#i18n{knowledge.manage_datasets.columnName}</@th>
+                <@th>#i18n{knowledge.manage_datasets.columnDescription}</@th>
+                <@th>#i18n{knowledge.manage_datasets.columnRecordMaxTokens}</@th>
+                <@th>#i18n{knowledge.manage_datasets.columnSearchMaxRecord}</@th>
+                <@th>#i18n{knowledge.manage_datasets.columnSearchMaxTokens}</@th>
+                <@th>#i18n{knowledge.manage_datasets.columnMatchInstruction}</@th>
+                <@th>#i18n{knowledge.manage_datasets.columnMismatchInstruction}</@th>
+                <@th>#i18n{portal.util.labelActions}</@th>
+            </@tr>
+            <@tableHeadBodySeparator />
+            <#if dataset_list?size gt 0 >
+            <#list dataset_list as dataset>
+                <@tr>
+                    <@td>${dataset.name}</@td>
+                    <@td>${dataset.description}</@td>
+                    <@td>${dataset.recordMaxTokens}</@td>
+                    <@td>${dataset.searchMaxRecord}</@td>
+                    <@td>${dataset.searchMaxTokens}</@td>
+                    <@td>${dataset.matchInstruction}</@td>
+                    <@td>${dataset.mismatchInstruction}</@td>
+                    <@td>
+                        <@aButton href='jsp/admin/plugins/knowledge/ManageDatasets.jsp?view=modifyDataset&id=${dataset.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
+                        <@aButton href='jsp/admin/plugins/knowledge/ManageDatasets.jsp?action=confirmRemoveDataset&id=${dataset.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger' />
+                    </@td>
+                </@tr>
+            </#list>
+            <#else>
+            <@tr>
+                <@td colspan=8>
+                    <@empty />
+                </@td>
+            </@tr>
+            </#if>
+        </@table>
+        <@paginationAdmin paginator=paginator combo=1 /> 
+    </@pageColumn>
+</@pageContainer>

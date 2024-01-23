@@ -1,0 +1,22 @@
+<#include "managebots_tabs.html" />
+<@tabs2 tab="toolset" />
+<@box>
+	<@boxHeader title='#i18n{knowledge.create_toolset.title}' />
+	<@boxBody>
+    <@tform name='create_toolset' action='jsp/admin/plugins/knowledge/ManageToolSets.jsp' >
+
+        <@messages errors=errors />
+        <@input type="hidden" id="id" name="id"/>
+        <@input type="hidden" value="${token}" name="token" />
+
+		<@formGroup labelFor='name' labelKey='#i18n{knowledge.modify_toolset.labelName}' mandatory=true>
+			<@input type='text' id='name' name='name'  value='${toolset.name!\'\'}' tabIndex='0' />
+		</@formGroup>
+		<@formGroup labelFor='description' labelKey='#i18n{knowledge.modify_toolset.labelDescription}' mandatory=true>
+			<@input type='text' id='description' name='description'  value='${toolset.description!\'\'}' tabIndex='1' />
+		</@formGroup>
+				
+		<@actionButtons button1Name="action_createToolSet" button2Name="view_manageToolSet"/>
+    </@tform>
+	</@boxBody>
+</@box>

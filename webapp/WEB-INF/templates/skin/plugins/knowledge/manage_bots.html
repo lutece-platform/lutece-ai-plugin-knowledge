@@ -1,0 +1,82 @@
+<#include "components/history.ftl" />
+<#include "components/user.ftl" />
+<#include "components/navigation.ftl" />
+<main class="flex-grow-1 d-flex flex-column overflow-auto pt-5">
+	<div class="flex-grow-1">
+		<div class="container-lg d-flex justify-content-center align-items-center h-100 mt-5 mt-xl-0">
+			<div>
+				<figure class="text-center">
+					<#include "components/brand.ftl">
+					<#include "components/brand-message.ftl">
+				</figure>
+				<div class="row mt-5">
+					<div class="col-12 mx-auto border-top py-5">
+						<div id="serviceList" class="row">
+							<div class="col-12 col-xl-8 mx-auto px-lg-5">
+								<input type="text" id="searchServiceList"
+								class="form-control form-control-lg rounded-5 p-3 px-5 w-100 mx-auto mb-4"
+								id="floatingInput" placeholder="Rechercher un service..." onkeyup="filterServices()">
+								<div class="list-group rounded-5">
+									<#list bot_list as bot>
+										<a href='Portal.jsp?page=bot&view=modifyBot&id=${bot.id}'
+											class="list-group-item list-group-item-action service-item  border-shadow"
+											data-service-name="${bot.name}" data-service-description="${bot.description}">
+											<div class="d-flex justify-content-between align-items-center">
+												<div class="d-flex flex-column justify-content-center p-4 py-3">
+													<h5 class="fw-bolder mb-0">${bot.name}</h5>
+													<div class=" mb-0">
+														<p class="mb-2">${bot.description}</p>
+														<p class="mb-0">
+															<span class="badge border text-body fs-6">${bot.typeId}</span>
+															<#if bot.datasetId gt 0>
+																<span class="badge border text-body fs-6">Ensemble de
+																	donn&eacute;es</span>
+															</#if>
+															<span class="badge border text-body fs-6">${bot.modelId}</span>
+														</p>
+													</div>
+												</div>
+												<div class="d-flex align-items-center">
+													<i class="ti ti-chevron-right fs-4"></i>
+												</div>
+											</div>
+										</a>
+									</#list>
+								</div>
+							</div>
+							<div class="col-12 col-lg-12 col-xl-4 mx-auto px-lg-5 pt-5 pt-lg-0 mt-lg-5 mt-xl-0 border-start border-lg-0">
+								<h3>Cr&eacute;er vos propres assistants</h3>
+								<p class="lead">Vous n'avez pas encore configur&eacute; votre propre assistant conversationnel. C'est rapide et facile ! Commencez d&egrave;s maintenant en cliquant sur 'Cr&eacute;er un nouvel agent' pour l'adapter &agrave; vos t&acirc;ches sp&eacute;cifiques.</p>
+								<div class="tooltip-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" title="Cette fonctionnalit&eacute; sera bient&ocirc;t disponible">
+									<a href='Portal.jsp?page=bot&view=modifyBot'
+										class="btn btn btn-lg btn-animated btn-knowledge rounded-5 w-100 text-nowrap disabled">Cr&eacute;er un nouvel agent <i class="ti ti-arrow-narrow-right"></i> </a>
+								</div>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+<script>
+	function filterServices() {
+		var input, filter, serviceList, services, serviceName, serviceDescription, i, textValue;
+		input = document.getElementById('searchServiceList');
+		filter = input.value.toUpperCase();
+		serviceList = document.getElementById('serviceList');
+		services = serviceList.getElementsByClassName('service-item');
+		for (i = 0; i < services.length; i++) {
+			serviceName = services[i].getAttribute('data-service-name');
+			serviceDescription = services[i].getAttribute('data-service-description');
+			textValue = serviceName + " " + serviceDescription;
+			if (textValue.toUpperCase().indexOf(filter) > -1) {
+				services[i].style.display = "";
+			} else {
+				services[i].style.display = "none";
+			}
+		}
+	}
+</script>

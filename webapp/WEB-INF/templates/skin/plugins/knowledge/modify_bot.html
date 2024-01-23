@@ -1,0 +1,102 @@
+<#include "components/user.ftl" />
+<#include "components/navigation.ftl" />
+<#include "components/history.ftl" />
+<main id="lutece-main" class="flex-grow-1 d-flex flex-column overflow-auto overflow-x-hidden pt-5">
+    <div class="flex-grow-1">
+        <div class="container-lg p-5 h-100">
+            <div class="row h-100 d-flex align-items-center justify-content-center">
+                <div id="luteceai-project" class="w-100">
+                    <div class="text-center">
+                        <i class="ti ti-message-chatbot display-1 text-radiant"></i>
+                        <h1 class="fw-bolder display-3">${bot.name}</h1>
+                        <p class="lead">${bot.description}</p>
+                        <div class="row text-start" style="max-width:100%">
+                            <div id="chat-messages" class="container">
+                                <#if bot_session?? && bot_session.content??>
+                                <#assign jsonStr = bot_session.content?replace('\\\\', '\\')>
+                                <#assign jsonStr = jsonStr?substring(2, jsonStr?length - 2)>
+                                <#assign conversations = jsonStr?split('},{"')>
+                                <#list conversations as conversation>
+                                  <#assign conversationWithBraces = "{" + conversation + "}">
+                                  <#assign conversationWithBraces = conversationWithBraces?replace('"{', '{')?replace('}"', '}')>
+                                  <#assign parts = conversationWithBraces?split('","')>
+                                  <#assign messageText = "">
+                                  <#assign messageType = "">
+                                  <#list parts as part>
+                                    <#assign keyValue = part?split('":"')>
+                                    <#if keyValue[0]?contains("type")>
+                                      <#assign messageType = keyValue[1]?replace('"', '')>
+                                    </#if>
+                                    <#if keyValue[0]?contains("text")>
+                                      <#assign messageText = keyValue[1]?replace('"', '')>
+                                    </#if>
+                                  </#list>
+                                  <#-- Now we should have both type and text for this conversation -->
+                                  <#if messageType?contains("USER")>
+                                    <div class="card-message mt-3 border-bottom card-message-user text-break fs-4 ">
+                                      <div class="card-body py-2">
+                                        <p class="card-text p-0">${messageText}</p>
+                                      </div>
+                                    </div>
+                                  <#else>
+                                    <div class="card-message mt-3 border-bottom card-message-assistant text-break bg-light px-5 py-4 rounded-3 fs-5 mb-3">
+                                      <div class="card-body">${messageText}</div>
+                                    </div>
+                                  </#if>
+                                </#list>
+                              </#if>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="position-sticky fixed-bottom  p-4">
+        <input type="file" id="fileInput" style="display:none;" />
+        <div class="position-relative mx-auto py-3 container-lg">
+            <input id="questioninput" class="form-control form-control-lg rounded-5 p-3 px-5" type="text"
+                name="question" placeholder="Tapez votre question ici" style="padding-right: 40px;">
+            <i class="ti ti-player-play-filled" style="position: absolute; right: 30px; top: 40px;"></i>
+            <i id="fileUploadIcon" class="ti ti-upload"
+                style="position: absolute; right: 70px; top: 40px; cursor: pointer;"></i>
+        </div>
+    </footer>
+</main>
+<link href="../../js/site/plugins/knowledge/highlight/styles/github-dark.min.css" rel="stylesheet" />
+<script src="../../js/site/plugins/knowledge/highlight/highlight.min.js"></script>
+<script src="../../js/site/plugins/knowledge/markdown-it.min.js"></script>
+<script src="../../js/site/plugins/knowledge/knowledge-chat.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const main = document.getElementById('lutece-main');
+        //get width of main element and set it at max;
+        const mainWidth = main.offsetWidth;
+        main.style.maxWidth = mainWidth + 'px';
+        //resize event;
+        window.addEventListener('resize', () => {
+            //need to reset first,
+            main.style.maxWidth = 'none';
+            //get width of main element and set it at max;
+            const mainWidth = main.offsetWidth;
+            main.style.maxWidth = mainWidth + 'px';
+        });
+        const chatMessages = document.getElementById('chat-messages');
+        const inputField = document.querySelector('input[name="question"]');
+        const knowledgeChat = new KnowledgeChat();
+        knowledgeChat.initialize(chatMessages, inputField, ${ bot.id }, 
+        <#if bot_session?? && bot_session.content??>
+        "${ bot_session.sessionId }"
+        <#else>
+        null
+        </#if>
+        );
+        setTimeout(() => {
+            inputField.focus();
+        }, 400);
+    });
+    window.onload = function() {
+        const main = document.getElementById("lutece-main");
+        main.scrollTop = main.scrollHeight;
+    }
+</script>

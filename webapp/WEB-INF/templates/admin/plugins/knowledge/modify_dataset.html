@@ -1,0 +1,104 @@
+<#include "managebots_tabs.html" />
+<@pageContainer>
+<@tabs2 tab="dataset" />
+
+	<@pageColumn>
+		<@pageHeader title='#i18n{knowledge.modify_dataset.title}' />
+		<@messages errors=errors />
+		<div class="row">
+			<div class="col-lg-7">
+				<div class="card p-4">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<div>
+							<h1>Fichiers</h1>
+							<p class="lead">Remplissez votre ensemble de donn&eacute;es avec vos fichiers.</p>
+						</div>
+						<div class="d-flex flex-column align-items-center">
+							<button class="btn btn-primary mt-auto" id="uploadBtn">Ajouter un fichier</button>
+							<input type="file" class="form-control d-none" id="file" name="file" accept=".pdf,.xlsx,.pptx,.docx">
+						</div>
+					</div>
+
+				<div class="card-body">
+				<ul class="list-group">
+					<#list dataset_file_list as document>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<div class="text-truncate me-3" title="${document.name}"><i class="ti ti-file-type-pdf"></i> ${document.name}</div>
+						<div><@aButton name="action_" href='jsp/admin/plugins/knowledge/ManageDatasets.jsp?action=removeDatasetFile&id_dataset_file=${document.id}' color='' class="btn-rounded border" size=''><i class="ti ti-trash"></i></@aButton></div>
+					</li>
+					<#else>
+					<li class="list-group-item">Aucun fichier dans l'ensemble de donn&eacute;es. Veuillez ajouter un fichier.</li>
+					</#list>
+				</ul>
+				</div>
+				
+			</div>
+				  <script>
+					document.getElementById('uploadBtn').addEventListener('click', function() {
+						document.getElementById('file').click();
+					});
+				  
+					document.getElementById('file').addEventListener('change', function() {
+						if (this.files && this.files[0]) {
+							var form = new FormData();
+							form.append('file', this.files[0]);
+							form.append('action_addDatasetFile', '');
+				  
+							var uploadBtn = document.getElementById('uploadBtn');
+							uploadBtn.innerHTML = '<i class="ti ti-loader"></i>'; // Add loader to button
+				  
+							fetch('jsp/admin/plugins/knowledge/ManageDatasets.jsp', {
+								method: 'POST',
+								body: form
+							}).then(function(response) {
+								if (!response.ok) {
+									throw new Error('Network response was not ok');
+								}
+								location.reload();
+							}).catch(function(error) {
+								console.error('There has been a problem with your fetch operation: ', error);
+							}).finally(function() {
+								uploadBtn.innerHTML = '<i class="ti ti-plus"></i> Ajouter un fichier'; // Restore button content after fetch
+							});
+						}
+					});
+				  </script>
+			
+			</div>
+			<div class="col-lg-5">
+		<@tform boxed=true class="form-horizontal" method="post" name="modify_dataset" action="jsp/admin/plugins/knowledge/ManageDatasets.jsp" >
+			<@messages errors=errors />
+			<@input type="hidden" id="id" name="id" value="${dataset.id}"/>
+			<@input type="hidden" value="${token}" name="token" />
+
+			<@formGroup labelFor='name' labelKey='#i18n{knowledge.modify_dataset.labelName}' mandatory=true>
+				<@input type='text' id='name' name='name' maxlength=255 value='${dataset.name!\'\'}' tabIndex='0' />
+			</@formGroup>
+			<@formGroup labelFor='description' labelKey='#i18n{knowledge.modify_dataset.labelDescription}' mandatory=true>
+				<@input type='textarea' id='description' name='description' value='${dataset.description!\'\'}' tabIndex='1' />
+			</@formGroup>
+			<@formGroup labelFor='record_max_tokens' labelKey='#i18n{knowledge.modify_dataset.labelRecordMaxTokens}' mandatory=true>
+				<@input type='text' id='record_max_tokens' name='record_max_tokens' value='${dataset.recordMaxTokens!\'\'}' tabIndex='2' />
+			</@formGroup>
+			<@formGroup labelFor='search_max_record' labelKey='#i18n{knowledge.modify_dataset.labelSearchMaxRecord}' mandatory=true>
+				<@input type='text' id='search_max_record' name='search_max_record' value='${dataset.searchMaxRecord!\'\'}' tabIndex='3' />
+			</@formGroup>
+			<@formGroup labelFor='search_max_tokens' labelKey='#i18n{knowledge.modify_dataset.labelSearchMaxTokens}' mandatory=true>
+				<@input type='text' id='search_max_tokens' name='search_max_tokens' value='${dataset.searchMaxTokens!\'\'}' tabIndex='4' />
+			</@formGroup>
+			<@formGroup labelFor='match_instruction' labelKey='#i18n{knowledge.modify_dataset.labelMatchInstruction}' mandatory=true>
+				<@input type='textarea' id='match_instruction' name='match_instruction' value='${dataset.matchInstruction!\'\'}' tabIndex='5' />
+				{{question}} - {{informations}} - {{file_names_sources}}
+			</@formGroup>
+			<@formGroup labelFor='mismatch_instruction' labelKey='#i18n{knowledge.modify_dataset.labelMismatchInstruction}' mandatory=true>
+				<@input type='textarea' id='mismatch_instruction' name='mismatch_instruction' value='${dataset.mismatchInstruction!\'\'}' tabIndex='6' />
+			</@formGroup>
+			
+
+			<@actionButtons button1Name="action_modifyDataset" button2Name="view_manageDataset"/>
+		</@tform>
+	</div>
+
+	</div>
+	</@pageColumn>
+</@pageContainer>

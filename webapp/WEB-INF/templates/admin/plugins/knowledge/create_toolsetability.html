@@ -1,0 +1,28 @@
+<#include "managebots_tabs.html" />
+<@tabs2 tab="toolsetability" />
+<@box>
+	<@boxHeader title='#i18n{knowledge.create_toolsetability.title}' />
+	<@boxBody>
+    <@tform name='create_toolsetability' action='jsp/admin/plugins/knowledge/ManageToolSetAbilitys.jsp' >
+
+        <@messages errors=errors />
+        <@input type="hidden" id="id" name="id"/>
+        <@input type="hidden" value="${token}" name="token" />
+
+		<@formGroup labelFor='name' labelKey='#i18n{knowledge.modify_toolsetability.labelName}' mandatory=true>
+			<@input type='text' id='name' name='name'  value='${toolsetability.name!\'\'}' tabIndex='0' />
+		</@formGroup>
+		<@formGroup labelFor='description' labelKey='#i18n{knowledge.modify_toolsetability.labelDescription}' mandatory=true>
+			<@input type='text' id='description' name='description'  value='${toolsetability.description!\'\'}' tabIndex='1' />
+		</@formGroup>
+		<@formGroup labelFor='instruction' labelKey='#i18n{knowledge.modify_toolsetability.labelInstruction}' mandatory=true>
+			<@input type='text' id='instruction' name='instruction'  value='${toolsetability.instruction!\'\'}' tabIndex='2' />
+		</@formGroup>
+		<@formGroup labelFor='toolset_id' labelKey='#i18n{knowledge.modify_toolsetability.labelToolsetId}' mandatory=true>
+			<@input type='text' id='toolset_id' name='toolset_id'  value='${toolsetability.toolsetId!\'\'}' tabIndex='3' />
+		</@formGroup>
+				
+		<@actionButtons button1Name="action_createToolSetAbility" button2Name="view_manageToolSetAbility"/>
+    </@tform>
+	</@boxBody>
+</@box>

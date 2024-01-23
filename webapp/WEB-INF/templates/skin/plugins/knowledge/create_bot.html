@@ -1,0 +1,38 @@
+<@box>
+	<@boxHeader title='#i18n{knowledge.modify_bot.title}' />
+	<@boxBody>
+		<@tform class='form-horizontal' action='jsp/site/Portal.jsp' >
+				<@messages errors=errors />
+				<@input type="hidden" id="id" name="id"/>
+				<@input type="hidden" value="${token}" name="token" />
+				<@input type="hidden" name="page" value="bot" /> 
+
+          		<@formGroup labelFor='name' labelKey='#i18n{knowledge.create_bot.labelName}' helpKey='#i18n{knowledge.create_bot.labelName.help}' mandatory=true>
+					<@input type="text" id="name" name="name" value="${bot.name!''}"  maxlength=255 tabIndex="1" />
+				</@formGroup>
+          		<@formGroup labelFor='description' labelKey='#i18n{knowledge.create_bot.labelDescription}' helpKey='#i18n{knowledge.create_bot.labelDescription.help}' mandatory=true>
+					<@input type="text" id="description" name="description" value="${bot.description!''}"  tabIndex="2" />
+				</@formGroup>
+          		<@formGroup labelFor='story' labelKey='#i18n{knowledge.create_bot.labelStory}' helpKey='#i18n{knowledge.create_bot.labelStory.help}' mandatory=true>
+					<@input type="text" id="story" name="story" value="${bot.story!''}"  tabIndex="3" />
+				</@formGroup>
+          		<@formGroup labelFor='dataset_id' labelKey='#i18n{knowledge.create_bot.labelDatasetId}' helpKey='#i18n{knowledge.create_bot.labelDatasetId.help}' mandatory=true>
+					<@input type="text" id="dataset_id" name="dataset_id" value="${bot.datasetId!''}"  tabIndex="4" />
+				</@formGroup>
+          		<@formGroup labelFor='toolset_id' labelKey='#i18n{knowledge.create_bot.labelToolsetId}' helpKey='#i18n{knowledge.create_bot.labelToolsetId.help}' mandatory=true>
+					<@input type="text" id="toolset_id" name="toolset_id" value="${bot.toolsetId!''}"  tabIndex="5" />
+				</@formGroup>
+          		<@formGroup labelFor='model_id' labelKey='#i18n{knowledge.create_bot.labelModelId}' helpKey='#i18n{knowledge.create_bot.labelModelId.help}' mandatory=true>
+					<@input type="text" id="model_id" name="model_id" value="${bot.modelId!''}"  maxlength=255 tabIndex="6" />
+				</@formGroup>
+          		<@formGroup labelFor='type_id' labelKey='#i18n{knowledge.create_bot.labelTypeId}' helpKey='#i18n{knowledge.create_bot.labelTypeId.help}' mandatory=true>
+					<@input type="text" id="type_id" name="type_id" value="${bot.typeId!''}"  tabIndex="7" />
+				</@formGroup>
+        		<@formGroup>
+          			<@button name='action_createBot' type='submit' tabIndex='7' title='#i18n{portal.util.labelCreate}' buttonIcon='plus' />
+					<@button name='view_manageBots' type='submit' title='#i18n{portal.util.labelCancel}' buttonIcon='close' color='btn-secondary' cancel=true />
+				</@formGroup>
+    </@tform>
+	</@boxBody>
+</@box>
+

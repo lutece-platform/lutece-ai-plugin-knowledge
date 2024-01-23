@@ -1,0 +1,11 @@
+<#macro tabs2 tab >
+<@pageColumn width="24rem">
+<h1>Menu</h1>
+<hr>
+<@tabList id="adminTechnicalList" style='pills' vertical=true>
+<@tabLink active=true href='jsp/admin/plugins/knowledge/ManageBots.jsp' title='#i18n{knowledge.manage_bots.pageTitle}'  />
+<@tabLink href='jsp/admin/plugins/knowledge/ManageDatasets.jsp' title='#i18n{knowledge.manage_datasets.pageTitle}'  />
+<@tabLink href='jsp/admin/plugins/knowledge/ManageToolSets.jsp' title='#i18n{knowledge.manage_toolsets.pageTitle}'  />
+</@tabList>
+</@pageColumn>
+</#macro>
