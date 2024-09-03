@@ -13,7 +13,10 @@ import dev.langchain4j.store.embedding.*;
 import dev.langchain4j.store.embedding.elasticsearch.ElasticsearchEmbeddingStore;
 import fr.paris.lutece.plugins.knowledge.business.Dataset;
 import fr.paris.lutece.plugins.knowledge.business.DatasetFile;
+import fr.paris.lutece.portal.service.file.FileServiceException;
 import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
+import fr.paris.lutece.portal.service.util.AppLogService;
+
 import java.io.InputStream;
 import java.util.*;
 import static dev.langchain4j.model.openai.OpenAiModelName.*;
@@ -43,17 +46,21 @@ public class ElasticStoreService
             return getElasticsearchEmbeddingStore( dataSet.getId( ) );
         } );
 
-        // get file
-        InputStream file = fileStoreService.getInputStream( fileKey );
-        Document document4j = parseDocument( file, dataSetFile.getName( ) );
+        try {
+            // get file
+			InputStream file = fileStoreService.getInputStream( fileKey );
+			Document document4j = parseDocument( file, dataSetFile.getName( ) );
 
-        // Generate embeddings
-        List<TextSegment> segments = new DocumentByLineSplitter( dataSet.getRecordMaxTokens( ), 5 ).split( document4j );
+			// Generate embeddings
+			List<TextSegment> segments = new DocumentByLineSplitter( dataSet.getRecordMaxTokens( ), 5 ).split( document4j );
 
-        Response<List<Embedding>> embeddings = embeddingModel.embedAll( segments );
+			Response<List<Embedding>> embeddings = embeddingModel.embedAll( segments );
 
-        // Store embeddings
-        projectEmbeddingStore.addAll( embeddings.content( ), segments );
+			// Store embeddings
+			projectEmbeddingStore.addAll( embeddings.content( ), segments );
+		} catch (FileServiceException e) {
+			AppLogService.error(e);
+		}
 
     }
 

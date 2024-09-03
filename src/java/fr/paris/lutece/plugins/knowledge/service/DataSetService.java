@@ -6,6 +6,7 @@ import fr.paris.lutece.plugins.knowledge.business.Dataset;
 import fr.paris.lutece.plugins.knowledge.business.DatasetFile;
 import fr.paris.lutece.plugins.knowledge.business.DatasetFileHome;
 import fr.paris.lutece.portal.service.file.FileService;
+import fr.paris.lutece.portal.service.file.FileServiceException;
 import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -61,8 +62,12 @@ public class DataSetService
     {
         Optional<DatasetFile> document = DatasetFileHome.findByPrimaryKey( documentId );
         document.ifPresent( doc -> {
-            FILE_STORE_SERVICE.delete( doc.getFileKey( ) );
-            DatasetFileHome.remove( documentId );
+            try {
+				FILE_STORE_SERVICE.delete( doc.getFileKey( ) );
+	            DatasetFileHome.remove( documentId );
+			} catch (FileServiceException e) {
+				AppLogService.error(e);
+			}
         } );
     }
 
